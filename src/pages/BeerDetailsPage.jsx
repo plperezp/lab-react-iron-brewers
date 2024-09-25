@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import beersJSON from "./../assets/beers.json";
-
+import axios from "axios";
 
 function BeerDetailsPage() {
   // Mock initial state, to be replaced by data from the Beers API. Store the beer info retrieved from the Beers API in this state variable.
+  const params = useParams()
   const [beer, setBeer] = useState(beersJSON[0]);
 
   // React Router hook for navigation. We use it for the back button. You can leave this as it is.
@@ -14,6 +15,23 @@ function BeerDetailsPage() {
 
   // TASKS:
   // 1. Get the beer ID from the URL, using the useParams hook.
+
+  useEffect(() =>{
+
+      getData()
+
+  })
+
+  const getData = async () =>{
+    try{
+      let response = await axios.get(`${import.meta.env.VITE_SERVER_URL}/beers/${params.beerId}`)
+      setBeer(response.data)
+
+    }catch(error){
+      console.log(error)
+    }
+  }
+
   // 2. Set up an effect hook to make a request for the beer info from the Beers API.
   // 3. Use axios to make a HTTP request.
   // 4. Use the response data from the Beers API to update the state variable.
